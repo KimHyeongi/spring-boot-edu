@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    gcp:
+      credentials:
+        location: classpath:my-project-01-2226833857a8.json
+      project-id: my-project-01
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
