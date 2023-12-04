@@ -16,8 +16,21 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory
 
 @Configuration
 class EduRestClientConfiguration() {
+
     @Bean
     fun fakeClassRestClient(): RestClient {
+        return eduRestClient()
+    }
+
+    @Bean
+    fun fakeRestClientService(): FakeRestClientService {
+        val factory = HttpServiceProxyFactory
+            .builderFor(RestClientAdapter.create(eduRestClient()))
+            .build()
+        return factory.createClient(FakeRestClientService::class.java)
+    }
+
+    private fun eduRestClient(): RestClient {
         return RestClient.builder().baseUrl("https://dummy-json.mock.beeceptor.com")
             .requestFactory(requestFactory())
             .defaultHeaders { headers: HttpHeaders ->
@@ -26,22 +39,6 @@ class EduRestClientConfiguration() {
             }
             .build()
     }
-
-    @Bean
-    fun fakeRestClientService(): FakeRestClientService {
-        val client = RestClient.builder().baseUrl("https://dummy-json.mock.beeceptor.com")
-            .requestFactory(requestFactory())
-            .defaultHeaders { headers: HttpHeaders ->
-                headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                headers.set("header-custom", "9999-9999-1234")
-            }
-            .build()
-        val factory = HttpServiceProxyFactory
-            .builderFor(RestClientAdapter.create(client))
-            .build()
-        return factory.createClient(FakeRestClientService::class.java)
-    }
-
 
     private fun requestFactory(): HttpComponentsClientHttpRequestFactory {
         val requestFactory = HttpComponentsClientHttpRequestFactory(httpClient())
