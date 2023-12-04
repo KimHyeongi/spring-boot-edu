@@ -16,6 +16,7 @@ java {
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -27,6 +28,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.0")
     implementation("io.github.microutils:kotlin-logging:4.0.0-beta-2")
 
+    implementation("org.apache.httpcomponents.client5:httpclient5-fluent:5.2.3")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.2.3")
 
     testImplementation(platform("io.kotest:kotest-bom:5.8.0"))
     testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
